@@ -1332,6 +1332,13 @@ def validate_configs(
         if train_config.unload_text_encoder:
             raise ValueError("Cannot cache unload text encoder with qwen_image_edit model. Control images are encoded with text embeddings. You can cache the text embeddings though")
     
+    # hunyuan_image3 cannot cache text embeddings (image dimensions required at encoding time)
+    if model_config.arch == 'hunyuan_image3':
+        if is_caching_text_embeddings:
+            raise ValueError("Cannot cache text embeddings with hunyuan_image3 model. Text encoding requires image dimensions at encoding time. Please set cache_text_embeddings to False.")
+        if train_config.unload_text_encoder:
+            raise ValueError("Cannot unload text encoder with hunyuan_image3 model. The text encoder is integrated into the diffusion model. Please set unload_text_encoder to False.")
+    
     if train_config.diff_output_preservation and train_config.blank_prompt_preservation:
         raise ValueError("Cannot use both differential output preservation and blank prompt preservation at the same time. Please set one of them to False.")
 

@@ -544,6 +544,26 @@ export const modelArchs: ModelArch[] = [
     disableSections: ['network.conv'],
     additionalSections: ['model.low_vram', 'model.layer_offloading'],
   },
+  {
+    name: 'hunyuan_image3',
+    label: 'HunyuanImage 3.0',
+    group: 'image',
+    defaults: {
+      'config.process[0].model.name_or_path': ['tencent/HunyuanImage-3.0', defaultNameOrPath],
+      'config.process[0].model.quantize': [true, false],
+      'config.process[0].model.quantize_te': [false, false],
+      'config.process[0].model.low_vram': [true, false],
+      'config.process[0].train.unload_text_encoder': [false, false],
+      'config.process[0].train.cache_text_embeddings': [false, false],
+      'config.process[0].sample.sampler': ['flowmatch', 'flowmatch'],
+      'config.process[0].train.noise_scheduler': ['flowmatch', 'flowmatch'],
+      'config.process[0].train.timestep_type': ['sigmoid', 'sigmoid'],
+      'config.process[0].sample.guidance_scale': [5, 5],
+      'config.process[0].sample.sample_steps': [50, 25],
+    },
+    disableSections: ['network.conv', 'train.unload_text_encoder', 'train.cache_text_embeddings'],
+    additionalSections: ['model.low_vram', 'model.layer_offloading'],
+  },
 ].sort((a, b) => {
   // Sort by label, case-insensitive
   return a.label.localeCompare(b.label, undefined, { sensitivity: 'base' });
